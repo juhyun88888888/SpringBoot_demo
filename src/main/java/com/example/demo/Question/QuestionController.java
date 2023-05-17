@@ -32,7 +32,7 @@ public class QuestionController {
         return "question_detail";
     }
 
-    @GetMapping("/question/create")
+    @GetMapping("question/create")
     public String questionCreate(QuestionForm questionForm) {
         return "question_form";
     }

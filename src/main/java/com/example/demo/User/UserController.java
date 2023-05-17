@@ -18,6 +18,11 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
+    }
+
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
         return "signup_form";
@@ -34,19 +39,23 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "signup_form";
         }
+    try {
 
-        try {
-            userService.create(userCreateForm.getUsername(),
-                    userCreateForm.getEmail(), userCreateForm.getPassword1());
-        }catch(DataIntegrityViolationException e) {
-            e.printStackTrace();
-            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            return "signup_form";
-        }catch(Exception e) {
-            e.printStackTrace();
-            bindingResult.reject("signupFailed", e.getMessage());
-            return "signup_form";
-        }
+        userService.create(userCreateForm.getUsername(),
+                userCreateForm.getEmail(), userCreateForm.getPassword1());
+
+    }catch(DataIntegrityViolationException e) {
+        e.printStackTrace();
+        bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+        return "signup_form";
+    }catch(Exception e) {
+        e.printStackTrace();
+        bindingResult.reject("signupFailed", e.getMessage());
+        return "signup_form";
+    }
+
         return "redirect:/";
+
+
     }
 }
